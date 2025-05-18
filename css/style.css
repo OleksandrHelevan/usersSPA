@@ -274,3 +274,6 @@ button[type="submit"]:hover {
 .user-info{
     flex: 2;
 }
+.cabinet{
+    margin: 64px 20px;
+}

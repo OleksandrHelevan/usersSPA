@@ -38,12 +38,18 @@ function validateLoginForm() {
         setSuccess(password);
     }
 
-    let user = JSON.parse(localStorage.getItem('user'));
+    let user = getItemWithExpire('user');
     if (user) {
         if (user.firstName === username.value && user.password === password.value) {
             isRegistered = true;
             container.innerHTML = '<div id="card-container" class="card-container"></div>';
-            generateOnePage();
+
+            generateOnePage()
+                .then(() => {
+                })
+                .catch((error) => {
+                    console.error('Помилка при генерації:', error);
+                });
         } else {
             setError(username, 'Incorrect login or password');
             setError(password, '');

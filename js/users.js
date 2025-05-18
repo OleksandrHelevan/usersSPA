@@ -1,3 +1,8 @@
+let users = []
+const NUMBER_OF_CARD_PER_PAGE = 30;
+console.log(getItemWithExpire('user'));
+let usersButton = document.getElementById('users');
+
 async function getUsers(n) {
     const response = await fetch(`https://randomuser.me/api/?results=${n}`, {
         headers: {'Content-Type': 'application/json'},
@@ -6,16 +11,12 @@ async function getUsers(n) {
     users = result.results;
 }
 
-console.log(localStorage.getItem('user'));
-const NUMBER_OF_CARD_PER_PAGE = 30;
-
 async function generateOnePage() {
     await getUsers(NUMBER_OF_CARD_PER_PAGE);
 
     const cardContainer = document.getElementById('card-container');
     if (!cardContainer) return;
     cardContainer.innerHTML = '';
-
     users.forEach(user => {
         cardContainer.innerHTML += showUser(user);
     });
@@ -35,4 +36,12 @@ function showUser(user) {
         </div>`;
 }
 
-
+usersButton.addEventListener('click', ()=>{
+    setUrl({ page: `users/1`});
+    generateOnePage()
+        .then(() => {
+        })
+        .catch((error) => {
+            console.error('Помилка при генерації:', error);
+        });
+});

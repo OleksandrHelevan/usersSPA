@@ -6,7 +6,7 @@ signupBtn.addEventListener('click', () => {
     loginForm.style.display = 'none';
     signupBtn.classList.add('active');
     loginBtn.classList.remove('active');
-    setUrl({ page: 'signup' });
+    setUrl({page: 'signup'});
 });
 
 signupForm.addEventListener('submit', (e) => {
@@ -17,7 +17,13 @@ signupForm.addEventListener('submit', (e) => {
         signupForm.reset();
         clearFormStyles(signupForm);
         container.innerHTML = '<div id="card-container" class="card-container"></div>';
-        generateOnePage();
+        setUrl({ page: 'users' });
+        generateOnePage()
+            .then(() => {
+            })
+            .catch((error) => {
+                console.error('Помилка при генерації:', error);
+            });
     }
 
 });
@@ -122,7 +128,7 @@ function validateSignupForm() {
             "country": country.value,
             "city": city.value,
         }
-        localStorage.setItem('user', JSON.stringify(user));
+        setItemWithExpire('user', user, 10*60);
     }
 
     return isValid;

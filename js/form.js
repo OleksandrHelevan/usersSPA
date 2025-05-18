@@ -1,22 +1,41 @@
 let container = document.getElementById('container');
+let formContainer = document.getElementById('form-container');
 let isRegistered = false;
+const countrySelect = document.getElementById('country');
+const citySelect = document.getElementById('city');
+const citiesByCountry = {
+    'Ukraine': ['Kyiv', 'Lviv', 'Odesa', 'Chernivtsi', 'Khust'],
+    'USA': ['New York', 'Los Angeles', 'Chicago']
+};
 
-window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const page = params.get('page');
+function setItemWithExpire(key, value, expireInSeconds) {
+    const now = new Date().getTime();
+    const item = {
+        value: value,
+        expire: now + expireInSeconds * 1000,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+}
 
-    if (page === 'signup') {
-        signupForm.style.display = 'block';
-        loginForm.style.display = 'none';
-        signupBtn.classList.add('active');
-        loginBtn.classList.remove('active');
-    } else {
-        signupForm.style.display = 'none';
-        loginForm.style.display = 'block';
-        signupBtn.classList.remove('active');
-        loginBtn.classList.add('active');
+function getItemWithExpire(key) {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+        return null;
     }
-});
+    try {
+        const item = JSON.parse(itemStr);
+        const now = new Date().getTime();
+
+        if (item.expire && now > item.expire) {
+            localStorage.removeItem(key);
+            return null;
+        }
+        console.log(item.expire - now);
+        return item.value;
+    } catch (e) {
+        return itemStr;
+    }
+}
 
 
 document.querySelectorAll('.toggle-password').forEach(toggle => {
@@ -94,14 +113,6 @@ function isAtLeast18(dob) {
 }
 
 
-const countrySelect = document.getElementById('country');
-const citySelect = document.getElementById('city');
-
-const citiesByCountry = {
-    'Ukraine': ['Kyiv', 'Lviv', 'Odesa', 'Chernivtsi', 'Khust'],
-    'USA': ['New York', 'Los Angeles', 'Chicago']
-};
-
 countrySelect.addEventListener('change', () => {
     const selectedCountry = countrySelect.value;
     citySelect.innerHTML = '<option value="">Select City</option>';
@@ -118,3 +129,15 @@ countrySelect.addEventListener('change', () => {
         citySelect.disabled = true;
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (getItemWithExpire('user')) {
+        formContainer.style.display = 'none';
+        generateOnePage()
+            .then(() => {
+            })
+            .catch((error) => {
+                console.error('Помилка при генерації:', error);
+            });
+    }
+})
