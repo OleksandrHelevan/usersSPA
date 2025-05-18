@@ -132,6 +132,7 @@ countrySelect.addEventListener('change', () => {
 document.addEventListener('DOMContentLoaded', () => {
     if (getItemWithExpire('user')) {
         formContainer.style.display = 'none';
+        document.getElementById("filters").style.display = 'flex';
         generateOnePage()
             .then(() => {
             })
@@ -140,5 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }else{
         formContainer.style.display = 'block';
+        document.getElementById("filters").style.display = 'none';
     }
 })

@@ -19,6 +19,7 @@ signupForm.addEventListener('submit', (e) => {
         clearFormStyles(signupForm);
         formContainer.style.display = 'none';
         setUrl({ page: 'users' });
+        document.getElementById("filters").style.display = 'flex';
         generateOnePage()
             .then(() => {
             })

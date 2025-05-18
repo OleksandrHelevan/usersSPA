@@ -9,10 +9,20 @@
 <header>
     <nav id="main-nav" class="navbar">
         <button id="users">Users</button>
-        <button id="cabinet">Personal cabinet</button>
         <button id="logout">Log out</button>
+
+        <button id="cabinet">Personal cabinet</button>
     </nav>
 </header>
+<aside class="filters" id="filters">
+    <button id="sort-by-name">Sort by Name (A–Z)</button>
+    <button id="sort-by-age">Sort by Age (Youngest)</button>
+    <button id="sort-by-registration">Sort by Registration Date (Newest)</button>
+    <input type="text" id="search" placeholder="Search name">
+    <input type="number" id="filter-age" placeholder="Filter by age">
+    <input type="number" id="filter-year" placeholder="Filter by birth year">
+    <input type="text" id="filter-location" placeholder="Filter by location">
+</aside>
 
 <main id="container">
     <div class="card-container" id="card-container">
@@ -136,7 +146,7 @@
             <button type="submit">Login</button>
         </form>
     </div>
-    <div id="cabinet-container"></div>
+    <div id="cabinet-container" class="cabinet-container"></div>
 </main>
 <script src="js/url.js"></script>
 <script src="js/form.js"></script>
