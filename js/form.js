@@ -1,6 +1,23 @@
 let container = document.getElementById('container');
 let isRegistered = false;
 
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page');
+
+    if (page === 'signup') {
+        signupForm.style.display = 'block';
+        loginForm.style.display = 'none';
+        signupBtn.classList.add('active');
+        loginBtn.classList.remove('active');
+    } else {
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        signupBtn.classList.remove('active');
+        loginBtn.classList.add('active');
+    }
+});
+
 
 document.querySelectorAll('.toggle-password').forEach(toggle => {
     let visible = false;

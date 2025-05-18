@@ -6,7 +6,7 @@ signupBtn.addEventListener('click', () => {
     loginForm.style.display = 'none';
     signupBtn.classList.add('active');
     loginBtn.classList.remove('active');
-    setUrl({path: '/login', query: {page: 'login', mode: 'light'}});
+    setUrl({ page: 'signup' });
 });
 
 signupForm.addEventListener('submit', (e) => {

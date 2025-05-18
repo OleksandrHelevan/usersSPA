@@ -1,5 +1,3 @@
-const params = new URLSearchParams(window.location.search);
-
 const loginBtn = document.getElementById('login-btn');
 const loginForm = document.getElementById('login-form');
 
@@ -8,7 +6,7 @@ loginBtn.addEventListener('click', () => {
     loginForm.style.display = 'block';
     loginBtn.classList.add('active');
     signupBtn.classList.remove('active');
-    setUrl({path: '/login', query: {page: 'login', mode: 'light'}});
+    setUrl({ page: 'login' });
 });
 
 loginForm.addEventListener('submit', (e) => {
