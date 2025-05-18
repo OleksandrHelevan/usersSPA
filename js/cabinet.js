@@ -1,19 +1,18 @@
 let user;
 let cabinetButton = document.getElementById('cabinet');
+let cabinetContainer = document.getElementById('cabinet-container');
 
 function generateCabinet() {
     try {
         const user = getItemWithExpire('user');
-
         if (!user) {
             console.error('Користувач не знайдений або дані прострочені.');
             return;
         }
+        setUrl({page: `cabinet/${user.firstName}${user.lastName}`});
 
-        setUrl({ page: `cabinet/${user.firstName}${user.lastName}` });
-
-        container.innerHTML = `
-            <div class="card-container" id="card-container">
+        cardContainer.style.display = 'none';
+        cabinetContainer.innerHTML = `
                 <div class="cabinet">
                     <h2>Профіль користувача</h2>
                     <p><strong>Ім'я:</strong> ${user.firstName}</p>
@@ -24,9 +23,8 @@ function generateCabinet() {
                     <p><strong>Дата народження:</strong> ${user.birthDate}</p>
                     <p><strong>Місто:</strong> ${user.city}</p>
                     <p><strong>Країна:</strong> ${user.country}</p>
-                </div>
-            </div>
-        `;
+                </div>`;
+
     } catch (err) {
         console.error('Помилка при генерації кабінету:', err);
     }
@@ -34,5 +32,6 @@ function generateCabinet() {
 
 
 cabinetButton.addEventListener('click', () => {
+    cabinetContainer.style.display = 'block';
     generateCabinet(user);
 })

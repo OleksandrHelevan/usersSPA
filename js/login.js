@@ -2,6 +2,7 @@ const loginBtn = document.getElementById('login-btn');
 const loginForm = document.getElementById('login-form');
 
 loginBtn.addEventListener('click', () => {
+    cabinetContainer.style.display = 'none';
     signupForm.style.display = 'none';
     loginForm.style.display = 'block';
     loginBtn.classList.add('active');
@@ -42,7 +43,6 @@ function validateLoginForm() {
     if (user) {
         if (user.firstName === username.value && user.password === password.value) {
             isRegistered = true;
-            container.innerHTML = '<div id="card-container" class="card-container"></div>';
 
             generateOnePage()
                 .then(() => {

@@ -6,6 +6,7 @@ signupBtn.addEventListener('click', () => {
     loginForm.style.display = 'none';
     signupBtn.classList.add('active');
     loginBtn.classList.remove('active');
+    cabinetContainer.style.display = 'none';
     setUrl({page: 'signup'});
 });
 
@@ -16,7 +17,7 @@ signupForm.addEventListener('submit', (e) => {
         isRegistered = true;
         signupForm.reset();
         clearFormStyles(signupForm);
-        container.innerHTML = '<div id="card-container" class="card-container"></div>';
+        formContainer.style.display = 'none';
         setUrl({ page: 'users' });
         generateOnePage()
             .then(() => {

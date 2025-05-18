@@ -1,7 +1,10 @@
 let users = []
 const NUMBER_OF_CARD_PER_PAGE = 30;
-console.log(getItemWithExpire('user'));
 let usersButton = document.getElementById('users');
+let cardContainer = document.getElementById('card-container');
+let isLoading = false;
+let lastFetchTime = 0;
+let counter = 0;
 
 async function getUsers(n) {
     const response = await fetch(`https://randomuser.me/api/?results=${n}`, {
@@ -11,16 +14,15 @@ async function getUsers(n) {
     users = result.results;
 }
 
-async function generateOnePage() {
-    await getUsers(NUMBER_OF_CARD_PER_PAGE);
-
-    const cardContainer = document.getElementById('card-container');
-    if (!cardContainer) return;
-    cardContainer.innerHTML = '';
-    users.forEach(user => {
-        cardContainer.innerHTML += showUser(user);
-    });
-}
+// async function generateOnePage() {
+//     await getUsers(NUMBER_OF_CARD_PER_PAGE);
+//
+//     if (!cardContainer) return;
+//     cardContainer.innerHTML = '';
+//     users.forEach(user => {
+//         cardContainer.innerHTML += showUser(user);
+//     });
+// }
 
 function showUser(user) {
     return `
@@ -36,14 +38,49 @@ function showUser(user) {
         </div>`;
 }
 
-usersButton.addEventListener('click', ()=>{
-    if(getItemWithExpire('user')) {
-        setUrl({page: `users/1`});
+usersButton.addEventListener('click', () => {
+    if (getItemWithExpire('user')) {
+        cardContainer.style.display = 'flex';
+        cabinetContainer.style.display = 'none';
         generateOnePage()
             .then(() => {
             })
             .catch((error) => {
                 console.error('Помилка при генерації:', error);
             });
+    }
+});
+
+async function generateOnePage() {
+    const now = Date.now();
+    if (now - lastFetchTime < 2000 || isLoading) return;
+
+    isLoading = true;
+    lastFetchTime = now;
+
+    await getUsers(NUMBER_OF_CARD_PER_PAGE);
+    if (!cardContainer) return;
+
+    users.forEach(user => {
+        cardContainer.innerHTML += showUser(user);
+    });
+
+    counter++;
+    setUrl({page: `users-${counter}`});
+
+    isLoading = false;
+}
+
+document.addEventListener('scroll', () => {
+    if (getItemWithExpire('user')) {
+        const scrollTop = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const fullHeight = document.body.offsetHeight;
+
+        if (scrollTop + windowHeight >= fullHeight - 100) {
+            generateOnePage().catch(error => {
+                console.error('Помилка при завантаженні користувачів:', error);
+            });
+        }
     }
 });
