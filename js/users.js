@@ -37,11 +37,13 @@ function showUser(user) {
 }
 
 usersButton.addEventListener('click', ()=>{
-    setUrl({ page: `users/1`});
-    generateOnePage()
-        .then(() => {
-        })
-        .catch((error) => {
-            console.error('Помилка при генерації:', error);
-        });
+    if(getItemWithExpire('user')) {
+        setUrl({page: `users/1`});
+        generateOnePage()
+            .then(() => {
+            })
+            .catch((error) => {
+                console.error('Помилка при генерації:', error);
+            });
+    }
 });
