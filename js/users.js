@@ -1,10 +1,11 @@
 async function getUsers(n) {
     const response = await fetch(`https://randomuser.me/api/?results=${n}`, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
     });
     const result = await response.json();
     users = result.results;
 }
+
 console.log(localStorage.getItem('user'));
 const NUMBER_OF_CARD_PER_PAGE = 30;
 

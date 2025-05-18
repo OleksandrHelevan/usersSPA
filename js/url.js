@@ -1,8 +1,9 @@
-function setUrl({ path, query = {} } = {}) {
-    const url = new URL(window.location.origin);
+function setUrl({path, query = {}} = {}) {
+    const url = new URL(window.location.href);
+    L
 
     if (path) {
-        url.pathname = path;
+        url.pathname = path.startsWith('/') ? path : '/' + path;
     }
     url.search = '';
 
@@ -14,4 +15,3 @@ function setUrl({ path, query = {} } = {}) {
 
     history.pushState({}, '', url.toString());
 }
-
