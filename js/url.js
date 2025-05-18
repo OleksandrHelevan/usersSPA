@@ -1,5 +1,5 @@
 function setUrl({ path, query = {} } = {}) {
-    const url = new URL(window.location.href);
+    const url = new URL(window.location.origin);
 
     if (path) {
         url.pathname = path;
