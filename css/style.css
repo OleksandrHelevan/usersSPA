@@ -320,3 +320,57 @@ button[type="submit"]:hover {
         cursor: pointer;
     }
 }
+
+#loading-spinner {
+    padding: 16px;
+    position: fixed;
+    top: calc(50% - 56px);
+    left: calc(50% - 56px);
+    border-radius: 12px;
+    z-index: 2;
+    display: none;
+    text-align: center;
+    margin: 20px;
+    background: lightblue;
+    opacity: 0.8;
+}
+
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    cursor: default;
+
+    &:hover {
+        border: 2px solid whitesmoke;
+    }
+
+    & > * {
+        cursor: pointer;
+        border-radius: 12px;
+        background-color: #3498db;
+        padding: 2px;
+        color: white;
+        font-weight: bold;
+    }
+}

@@ -1,15 +1,14 @@
-function setUrl(query = {}) {
-    const url = new URL(window.location.href);
-    url.search = '';
-
-    for (const key in query) {
-        if (query[key]) {
-            url.searchParams.set(key, query[key]);
+function setUrl(params = {}) {
+    const url = new URL(window.location);
+    Object.entries(params).forEach(([key, value]) => {
+        if (value) {
+            url.searchParams.set(key, value);
+        } else {
+            url.searchParams.delete(key);
         }
-    }
-    history.pushState({}, '', url.toString());
+    });
+    history.replaceState({}, '', url);
 }
-
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const page = params.get('page');

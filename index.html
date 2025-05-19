@@ -10,8 +10,8 @@
     <nav id="main-nav" class="navbar">
         <button id="users">Users</button>
         <button id="logout">Log out</button>
-
         <button id="cabinet">Personal cabinet</button>
+        <div id="pagination" class="pagination"></div>
     </nav>
 </header>
 <aside class="filters" id="filters">
@@ -147,6 +147,10 @@
         </form>
     </div>
     <div id="cabinet-container" class="cabinet-container"></div>
+    <div id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    <div id="error-message" style="display: none; color: red; text-align: center; margin: 1em 0;"></div>
 </main>
 <script src="js/url.js"></script>
 <script src="js/form.js"></script>
@@ -155,5 +159,7 @@
 <script src="js/signup.js"></script>
 <script src="js/cabinet.js"></script>
 <script src="js/logout.js"></script>
+<script src="js/spinner.js"></script>
+<script src="js/pagination.js"></script>
 </body>
 </html>

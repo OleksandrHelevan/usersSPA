@@ -30,7 +30,6 @@ function getItemWithExpire(key) {
             localStorage.removeItem(key);
             return null;
         }
-        console.log(item.expire - now);
         return item.value;
     } catch (e) {
         return itemStr;
