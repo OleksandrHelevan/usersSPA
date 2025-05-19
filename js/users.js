@@ -103,45 +103,52 @@ function showUser(user) {
         </div>`;
 }
 
-usersButton.addEventListener('click', () => {
+usersButton.addEventListener('click', async () => {
     if (getItemWithExpire('user')) {
         cardContainer.style.display = 'flex';
         cabinetContainer.style.display = 'none';
-        generateOnePage()
-            .then(applyFiltersFromUrl)
-            .catch(error => {
+
+        if (users.length === 0) {
+            try {
+                showLoading();
+                await getUsers(NUMBER_OF_CARD_PER_PAGE * 3);
+                currentUsers = [...users];
+                showPage(1);
+            } catch (error) {
                 console.error('Помилка при ініціалізації користувачів:', error);
                 getError('Не вдалося ініціалізувати користувачів. Спробуйте пізніше.');
-            });
+            } finally {
+                hideLoading();
+            }
+        } else {
+            showPage(1);
+        }
     }
 });
 
 
-async function generateOnePage() {
-    const now = Date.now();
-    if (now - lastFetchTime < 2000 || isLoading) return;
+async function generateOnePage(pageNumber = 1) {
+    const totalNeeded = pageNumber * NUMBER_OF_CARD_PER_PAGE;
 
-    isLoading = true;
-    showLoading();
-    lastFetchTime = now;
+    if (users.length < totalNeeded) {
+        const now = Date.now();
+        if (now - lastFetchTime < 2000 || isLoading) return;
 
-    const prevLength = users.length;
-    await getUsers(NUMBER_OF_CARD_PER_PAGE);
-    const newUsers = users.slice(prevLength);
+        isLoading = true;
+        showLoading();
+        lastFetchTime = now;
 
-    if (!cardContainer) return;
+        const toFetch = totalNeeded - users.length;
+        await getUsers(toFetch);
 
-    newUsers.forEach(user => {
-        cardContainer.innerHTML += showUser(user);
-    });
+        isLoading = false;
+        hideLoading();
+    }
 
-    counter++;
-    setUrl({ page: `users-${counter}` });
-    renderPagination(counter, counter);
-
-    isLoading = false;
-    hideLoading();
+    showPage(pageNumber);
+    setUrl({ page: pageNumber });
 }
+
 
 
 function getError(message = 'Щось пішло не так. Спробуйте ще раз пізніше.') {
@@ -158,20 +165,23 @@ function getError(message = 'Щось пішло не так. Спробуйте
 
 
 document.addEventListener('scroll', debounce(() => {
-    if (getItemWithExpire('user')) {
-        const scrollTop = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const fullHeight = document.body.offsetHeight;
-        console.log(users.length);
+    if (!getItemWithExpire('user')) return;
 
-        if (scrollTop + windowHeight >= fullHeight - 100) {
-            generateOnePage().catch(error => {
-                console.error('Помилка при завантаженні користувачів:', error);
-                getError('Не вдалося завантажити користувачів. Спробуйте пізніше.');
-            });
-        }
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const fullHeight = document.body.offsetHeight;
+
+    if (scrollTop + windowHeight >= fullHeight - 100) {
+        const currentPage = getPageFromUrl();
+        const nextPage = currentPage + 1;
+
+        generateOnePage(nextPage).catch(error => {
+            console.error('Помилка при завантаженні користувачів:', error);
+            getError('Не вдалося завантажити користувачів. Спробуйте пізніше.');
+        });
     }
 }, 500));
+
 
 
 function renderSortedUsers(sortedUsers) {
@@ -227,4 +237,14 @@ window.addEventListener('popstate', () => {
 });
 document.addEventListener('DOMContentLoaded', () => {
     applyFiltersFromUrl();
+
+    const params = new URLSearchParams(window.location.search);
+    const pageParam = parseInt(params.get('page'));
+    if (!isNaN(pageParam)) {
+        currentPage = pageParam;
+    }
+
+    if (users.length > 0) {
+        showPage(currentPage);
+    }
 });

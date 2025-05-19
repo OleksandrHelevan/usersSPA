@@ -369,7 +369,7 @@ button[type="submit"]:hover {
         cursor: pointer;
         border-radius: 12px;
         background-color: #3498db;
-        padding: 2px;
+        padding: 4px;
         color: white;
         font-weight: bold;
     }
