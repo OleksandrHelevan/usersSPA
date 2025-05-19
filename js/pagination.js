@@ -45,6 +45,8 @@ function showPage(pageNumber) {
 
     const totalPages = Math.ceil(users.length / NUMBER_OF_CARD_PER_PAGE);
     renderPagination(totalPages, pageNumber);
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 
