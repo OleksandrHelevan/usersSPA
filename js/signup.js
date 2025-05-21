@@ -18,7 +18,7 @@ signupForm.addEventListener('submit', (e) => {
         signupForm.reset();
         clearFormStyles(signupForm);
         formContainer.style.display = 'none';
-        setUrl({ page: 'users' });
+        setUrl({page: 'users'});
         document.getElementById("filters").style.display = 'flex';
         generateOnePage()
             .then(() => {
@@ -130,7 +130,7 @@ function validateSignupForm() {
             "country": country.value,
             "city": city.value,
         }
-        setItemWithExpire('user', user, 10*60);
+        setItemWithExpire('user', user, 10 * 60);
     }
 
     return isValid;

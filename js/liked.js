@@ -31,4 +31,3 @@ document.getElementById('favorites').addEventListener('click', () => {
         cardContainer.innerHTML += showUser(user);
     });
 });
-

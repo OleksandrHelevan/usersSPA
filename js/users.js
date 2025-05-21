@@ -21,12 +21,15 @@ function applyFiltersFromUrl() {
     const age = params.get('age') || '';
     const birthYear = params.get('birthYear') || '';
     const location = params.get('location') || '';
+    const email = params.get('email') || '';
     const sort = params.get('sort');
+
 
     document.getElementById('search').value = name;
     document.getElementById('filter-age').value = age;
     document.getElementById('filter-year').value = birthYear;
     document.getElementById('filter-location').value = location;
+    document.getElementById('filter-email').value = email;
 
     applyAllFilters();
 
@@ -51,18 +54,20 @@ function applyAllFilters() {
     const age = parseInt(document.getElementById('filter-age').value.trim(), 10);
     const birthYear = parseInt(document.getElementById('filter-year').value.trim(), 10);
     const location = document.getElementById('filter-location').value.trim().toLowerCase();
+    const email = document.getElementById('filter-email').value.trim().toLowerCase()
 
     let filtered = users.filter(user => {
         const fullName = `${user.name.first} ${user.name.last}`.toLowerCase();
         const userAge = user.dob.age;
         const userBirthYear = new Date(user.dob.date).getFullYear();
         const userLocation = `${user.location.city}, ${user.location.country}`.toLowerCase();
-
+        const userEmail = `${user.email}`.toLowerCase();
         return (
             (!name || fullName.includes(name)) &&
             (isNaN(age) || userAge === age) &&
             (isNaN(birthYear) || userBirthYear === birthYear) &&
-            (!location || userLocation.includes(location))
+            (!location || userLocation.includes(location)) &&
+            (!email || userEmail.includes(email))
         );
     });
 
@@ -71,7 +76,8 @@ function applyAllFilters() {
         name: name || '',
         age: isNaN(age) ? '' : age,
         birthYear: isNaN(birthYear) ? '' : birthYear,
-        location: location || ''
+        location: location || '',
+        email: email || ''
     });
 }
 
@@ -99,6 +105,7 @@ function showUser(user) {
                 <p class="user-card-text">Location: ${user.location.city}, ${user.location.country}</p>
                 <p class="user-card-text">Gender: ${user.gender}</p>
                 <p class="user-card-text">Phone: ${user.phone}</p>
+                <p class="user-card-text">Email: ${user.email}</p>
                 <p class="user-card-text">Reg-age: ${user.registered.age}</p>
             </div>
             <img class="user-img" src="${user.picture.large}" alt="User image">
@@ -237,6 +244,7 @@ function renderFiltered(filtered) {
 document.getElementById('filter-age').addEventListener('input', debounce(applyAllFilters, 300));
 document.getElementById('filter-year').addEventListener('input', debounce(applyAllFilters, 300));
 document.getElementById('filter-location').addEventListener('input', debounce(applyAllFilters, 300));
+document.getElementById('filter-email').addEventListener('input', debounce(applyAllFilters, 300));
 document.getElementById('search').addEventListener('input', debounce(applyAllFilters, 300));
 window.addEventListener('popstate', () => {
     applyFiltersFromUrl();
