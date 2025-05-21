@@ -7,7 +7,7 @@
 
 body {
     font-family: "lucida grande", "lucida grande", sans-serif;
-    background-color: rgba(181, 240, 255, 0.61);
+    background-image: linear-gradient(to right, lightcoral, lightblue);
     min-height: 100vh;
     display: flex;
     justify-content: space-between;
